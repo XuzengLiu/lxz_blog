@@ -1,0 +1,7 @@
+<div class="metadata">
+  <time datetime="<%= post.date %>"><%= post.date %></time>
+  <a href="<%= prefix %>categories.html#group-<%= categories.keys.index(post.category) + 1 %>"><%= h(post.category) %></a>
+  <% post.tags.each do |tag| %>
+    <a class="tag" href="<%= prefix %>tags.html#group-<%= tags.keys.index(tag) + 1 %>">#<%= h(tag) %></a>
+  <% end %>
+</div>

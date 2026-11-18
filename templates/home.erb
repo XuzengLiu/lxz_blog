@@ -1,0 +1,29 @@
+<section class="entries" aria-label="最近文章">
+  <% if items.empty? %><p>这里还没有文章。</p><% end %>
+  <% items.each do |post| %>
+    <article class="entry">
+      <h2><a href="<%= prefix %><%= post_path(post) %>"><%= h(post.title) %></a></h2>
+      <p><%= h(post.summary) %></p>
+      <%= render('metadata', post: post, prefix: prefix, categories: categories, tags: tags) %>
+    </article>
+  <% end %>
+</section>
+<% if total > 1 %>
+  <nav class="pagination" aria-label="文章分页">
+    <% if number > 1 %>
+      <a href="<%= prefix %><%= page_path(number - 1) %>#board" rel="prev" aria-label="上一页">‹</a>
+    <% end %>
+    <% visible = ([1, total] + ((number - 2)..(number + 2)).to_a).select { |i| i.between?(1, total) }.uniq.sort %>
+    <% visible.each_with_index do |index, i| %>
+      <% if i.positive? && index - visible[i - 1] > 1 %><span aria-hidden="true">…</span><% end %>
+      <% if index == number %>
+        <span class="current-page" aria-current="page"><%= index %></span>
+      <% else %>
+        <a href="<%= prefix %><%= page_path(index) %>#board" aria-label="第 <%= index %> 页"><%= index %></a>
+      <% end %>
+    <% end %>
+    <% if number < total %>
+      <a href="<%= prefix %><%= page_path(number + 1) %>#board" rel="next" aria-label="下一页">›</a>
+    <% end %>
+  </nav>
+<% end %>

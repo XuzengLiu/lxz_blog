@@ -1,0 +1,18 @@
+<p class="group-count">共 <%= count %> <%= {'archives' => '篇文章', 'categories' => '个分类', 'tags' => '个标签'}.fetch(active) %></p>
+<% if active != 'archives' && !groups.empty? %>
+  <nav class="group-cloud" aria-label="<%= heading %>索引">
+    <% groups.each_with_index do |(name, posts), i| %>
+      <a href="#group-<%= i + 1 %>"><%= h(name) %> <small><%= posts.length %></small></a>
+    <% end %>
+  </nav>
+<% end %>
+<% groups.each_with_index do |(name, posts), i| %>
+  <section class="group" id="group-<%= i + 1 %>">
+    <h2><%= h(name) %></h2>
+    <ul class="timeline">
+      <% posts.each do |post| %>
+        <li><time datetime="<%= post.date %>"><%= post.date.strftime('%m-%d') %></time><a href="<%= post_path(post) %>"><%= h(post.title) %></a></li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

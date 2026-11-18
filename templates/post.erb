@@ -1,0 +1,28 @@
+<div class="article-grid<%= ' has-toc' unless post.headings.empty? %>">
+  <% unless post.headings.empty? %>
+    <aside class="toc">
+      <details open>
+        <summary>目录</summary>
+        <ol>
+          <% post.headings.each do |id, text, level| %>
+            <li class="toc-level-<%= level %>"><a href="#<%= id %>"><%= h(CGI.unescapeHTML(text.gsub(/<[^>]*>/, ''))) %></a></li>
+          <% end %>
+        </ol>
+      </details>
+    </aside>
+  <% end %>
+  <article class="article">
+    <p class="post-summary"><%= h(post.summary) %></p>
+    <div class="prose"><%= post.body %></div>
+    <div class="post-end">
+      <%= render('metadata', post: post, prefix: '../', categories: categories, tags: tags) %>
+    </div>
+    <% if newer || older %>
+      <nav class="neighbors" aria-label="相邻文章">
+        <% if newer %><a href="../<%= post_path(newer) %>"><span>← 较新的文章</span><strong><%= h(newer.title) %></strong></a><% end %>
+        <% if older %><a href="../<%= post_path(older) %>"><span>较早的文章 →</span><strong><%= h(older.title) %></strong></a><% end %>
+      </nav>
+    <% end %>
+    <a class="back" href="../index.html#board">← 返回文章列表</a>
+  </article>
+</div>

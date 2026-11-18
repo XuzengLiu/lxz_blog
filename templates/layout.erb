@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="<%= h(post ? post.summary : site['subtitle']) %>">
+  <title><%= h(active == 'home' ? site['title'] : "#{heading} · #{site['title']}") %></title>
+  <link rel="preload" as="image" href="<%= prefix %>assets/banner.jpg">
+  <link rel="stylesheet" href="<%= prefix %>assets/style.css">
+  <script src="<%= prefix %>assets/preferences.js"></script>
+  <script src="<%= prefix %>assets/blog.js" defer></script>
+</head>
+<body data-root="<%= prefix %>" id="top">
+  <a class="skip" href="#board">跳到内容</a>
+  <header class="topbar">
+    <div class="nav-shell">
+      <a class="brand" href="<%= prefix %>index.html"><%= h(site['title']) %></a>
+      <button class="menu-toggle icon-button" type="button" aria-controls="site-menu" aria-expanded="false" aria-label="展开导航" hidden>☰</button>
+      <nav class="site-menu" id="site-menu" aria-label="主导航">
+        <% [['home', 'index.html', '首页'], ['archives', 'archives.html', '归档'], ['categories', 'categories.html', '分类'], ['tags', 'tags.html', '标签'], ['about', 'about.html', '关于']].each do |key, href, label| %>
+          <a href="<%= prefix %><%= href %>"<%= ' aria-current="page"' if active == key %>><%= label %></a>
+        <% end %>
+        <button class="icon-button" id="open-search" type="button" aria-label="搜索文章" title="搜索文章" hidden><span class="magnifier" aria-hidden="true"></span></button>
+        <button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="切换阅读主题" title="切换阅读主题" hidden><span aria-hidden="true">☾</span></button>
+      </nav>
+    </div>
+  </header>
+  <section class="banner <%= active == 'home' ? 'banner-home' : 'banner-inner' %>">
+    <div class="banner-content">
+      <h1><%= h(heading) %></h1>
+      <% if active == 'home' %>
+        <p><%= h(site['subtitle']) %></p>
+      <% elsif post %>
+        <p class="hero-meta"><time datetime="<%= post.date %>"><%= post.date %></time><span aria-hidden="true">·</span><%= h(post.category) %></p>
+      <% end %>
+    </div>
+    <% if active == 'home' %>
+      <a class="jump" href="#board" aria-label="浏览文章"><span aria-hidden="true"></span></a>
+    <% end %>
+  </section>
+  <main class="board board-<%= active %>" id="board"><%= content %></main>
+  <footer class="site-footer">
+    <a href="<%= prefix %>index.html"><%= h(site['title']) %></a>
+    <a href="#top">回到顶部 ↑</a>
+  </footer>
+  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+    <div class="search-heading">
+      <h2 id="search-title">搜索文章</h2>
+      <form method="dialog"><button type="submit" class="icon-button" aria-label="关闭搜索">×</button></form>
+    </div>
+    <label class="sr-only" for="search-input">关键词</label>
+    <input type="search" id="search-input" placeholder="搜索标题、正文或标签" autocomplete="off">
+    <p class="search-status" id="search-status" aria-live="polite">输入关键词开始搜索。</p>
+    <ul class="search-results" id="search-results"></ul>
+  </dialog>
+</body>
+</html>
